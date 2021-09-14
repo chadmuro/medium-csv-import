@@ -50,11 +50,21 @@ function App() {
           <p>Drag 'n' drop some files here, or click to select files</p>
         )}
       </div>
-      <button disabled>Import</button>
-      <div>
+      <table>
+        <tr>
+          <th>Kanji</th>
+          <th>Reading</th>
+          <th>English</th>
+        </tr>
         {parsedCsvData &&
-          parsedCsvData.map(parsedData => <p>{parsedData.Kanji}</p>)}
-      </div>
+          parsedCsvData.map(parsedData => (
+            <tr>
+              <td>{parsedData.Kanji}</td>
+              <td>{parsedData.Reading}</td>
+              <td>{parsedData.English}</td>
+            </tr>
+          ))}
+      </table>
     </div>
   );
 }
