@@ -34,7 +34,6 @@ function App() {
           <p>Drag 'n' drop some files here, or click to select files</p>
         )}
       </div>
-      <button disabled>Import</button>
     </div>
   );
 }
