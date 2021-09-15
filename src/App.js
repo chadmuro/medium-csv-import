@@ -9,7 +9,7 @@ function App() {
   const parseFile = file => {
     Papa.parse(file, {
       header: true,
-      complete: async results => {
+      complete: results => {
         setParsedCsvData(results.data);
       },
     });
@@ -51,19 +51,23 @@ function App() {
         )}
       </div>
       <table>
-        <tr>
-          <th>Kanji</th>
-          <th>Reading</th>
-          <th>English</th>
-        </tr>
-        {parsedCsvData &&
-          parsedCsvData.map(parsedData => (
-            <tr>
-              <td>{parsedData.Kanji}</td>
-              <td>{parsedData.Reading}</td>
-              <td>{parsedData.English}</td>
-            </tr>
-          ))}
+        <thead>
+          <tr>
+            <th>Kanji</th>
+            <th>Reading</th>
+            <th>English</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parsedCsvData &&
+            parsedCsvData.map((parsedData, index) => (
+              <tr key={index}>
+                <td>{parsedData.Kanji}</td>
+                <td>{parsedData.Reading}</td>
+                <td>{parsedData.English}</td>
+              </tr>
+            ))}
+        </tbody>
       </table>
     </div>
   );
