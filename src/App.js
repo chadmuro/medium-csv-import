@@ -2,6 +2,7 @@ import './App.css';
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Papa from 'papaparse';
+import Encoding from 'encoding-japanese';
 
 function App() {
   const [parsedCsvData, setParsedCsvData] = useState([]);
@@ -19,7 +20,24 @@ function App() {
 
   const onDrop = useCallback(acceptedFiles => {
     if (acceptedFiles.length) {
-      parseFile(acceptedFiles[0]);
+      const file = acceptedFiles[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        const contents = new Uint8Array(reader.result);
+        const encodingType = Encoding.detect(contents);
+
+        const unicodeArray = Encoding.convert(contents, {
+          to: 'UNICODE',
+          from: encodingType,
+        });
+
+        const unicodeString = Encoding.codeToString(unicodeArray);
+        const newFile = new File([unicodeString], 'prefectures.txt', {
+          type: 'text/csv',
+        });
+        parseFile(newFile);
+      };
+      reader.readAsArrayBuffer(file);
     }
   }, []);
 
