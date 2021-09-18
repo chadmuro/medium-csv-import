@@ -22,22 +22,29 @@ function App() {
     if (acceptedFiles.length) {
       const file = acceptedFiles[0];
       const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
       reader.onload = () => {
         const contents = new Uint8Array(reader.result);
+
+        // detect encoding type
         const encodingType = Encoding.detect(contents);
 
+        // convert any encoding type to unicode
         const unicodeArray = Encoding.convert(contents, {
           to: 'UNICODE',
           from: encodingType,
         });
 
+        // convert unicode to string
         const unicodeString = Encoding.codeToString(unicodeArray);
+
+        // create new csv file with unicode characters
         const newFile = new File([unicodeString], 'prefectures.txt', {
           type: 'text/csv',
         });
+
         parseFile(newFile);
       };
-      reader.readAsArrayBuffer(file);
     }
   }, []);
 
